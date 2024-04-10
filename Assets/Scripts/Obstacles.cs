@@ -1,41 +1,44 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Obstacles : MonoBehaviour
+public class GameElementSpawner : MonoBehaviour
 {
-
-    public GameObject branchPrefab; // Assignez votre prefab de branche dans l'inspecteur
-    public GameObject rockPrefab; // Assignez votre prefab de roche dans l'inspecteur
+    public GameObject branchPrefab;
+    public GameObject rockPrefab;
+    public GameObject coinPrefab;
     public float spawnLimitLeft = -6;
     public float spawnLimitRight = 6;
-    public float spawnInterval = 5; // Intervalle de temps entre les spawns d'obstacles
+    public float obstacleSpawnInterval = 5; // Intervalle pour les obstacles
+    public float coinSpawnInterval = 3; // Intervalle pour les pièces
 
-    // Start est appelé avant le premier frame update
     void Start()
     {
+        // Commence à générer des obstacles et des pièces
         StartCoroutine(SpawnObstacles());
+        StartCoroutine(SpawnCoins());
     }
 
     IEnumerator SpawnObstacles()
     {
         while (true)
         {
-            // Générer le premier obstacle
-            Vector3 spawnPosition1 = new Vector3(Random.Range(spawnLimitLeft, spawnLimitRight), 0, transform.position.z);
-            GameObject obstaclePrefab1 = Random.Range(0, 2) == 0 ? branchPrefab : rockPrefab;
-            Instantiate(obstaclePrefab1, spawnPosition1, Quaternion.identity);
+            // Choisissez aléatoirement entre branchPrefab et rockPrefab pour l'obstacle à générer
+            GameObject obstaclePrefab = Random.Range(0, 2) == 0 ? branchPrefab : rockPrefab;
+            Vector3 spawnPosition = new Vector3(Random.Range(spawnLimitLeft, spawnLimitRight), 0, transform.position.z);
+            Instantiate(obstaclePrefab, spawnPosition, Quaternion.identity);
 
-            // Attendre un moment avant de générer le deuxième obstacle, pour diversifier
-            yield return new WaitForSeconds(spawnInterval / 2);
+            yield return new WaitForSeconds(obstacleSpawnInterval);
+        }
+    }
 
-            // Générer le deuxième obstacle
-            Vector3 spawnPosition2 = new Vector3(Random.Range(spawnLimitLeft, spawnLimitRight), 0, transform.position.z);
-            GameObject obstaclePrefab2 = Random.Range(0, 2) == 0 ? branchPrefab : rockPrefab;
-            Instantiate(obstaclePrefab2, spawnPosition2, Quaternion.identity);
+    IEnumerator SpawnCoins()
+    {
+        while (true)
+        {
+            Vector3 spawnPosition = new Vector3(Random.Range(spawnLimitLeft, spawnLimitRight), 0, transform.position.z);
+            Instantiate(coinPrefab, spawnPosition, Quaternion.Euler(90,0,0));
 
-            // Attendre l'intervalle de spawn avant de générer à nouveau
-            yield return new WaitForSeconds(spawnInterval / 2);
+            yield return new WaitForSeconds(coinSpawnInterval);
         }
     }
 }
