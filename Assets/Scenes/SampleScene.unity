@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.3069224, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028331, g: 0.2257133, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -571,7 +571,7 @@ GameObject:
   - component: {fileID: 1444008096}
   - component: {fileID: 1444008095}
   m_Layer: 0
-  m_Name: Quad
+  m_Name: Sol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -619,7 +619,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6b1037b00b86ff7469e7fbe5f5589612, type: 2}
+  - {fileID: 2100000, guid: af3e1988bb4dcfb4cba2551f800312b9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -659,7 +659,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0.8, y: -8.61e-13, z: 1.54}
-  m_LocalScale: {x: 14, y: 276.58243, z: 6.4}
+  m_LocalScale: {x: 100.6, y: 250.6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -693,6 +693,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43443ebaf9723ab42ae1e2c0c5d24ad7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerFeedback: {fileID: 0}
   branchPrefab: {fileID: 1493958779012120596, guid: b9de24523a11d714db3851b5f0f9d527, type: 3}
   rockPrefab: {fileID: 7405846476849542632, guid: c6308cb7062fac34e8e50600086b12a1, type: 3}
   coinPrefab: {fileID: 390382470234128106, guid: 1dcb09af418210f49b36bfb6b5acea44, type: 3}

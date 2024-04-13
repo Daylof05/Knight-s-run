@@ -3,31 +3,44 @@ using UnityEngine;
 
 public class GameElementSpawner : MonoBehaviour
 {
+    public PlayerFeedback playerFeedback; // R√©f√©rence au script PlayerFeedback
     public GameObject branchPrefab;
     public GameObject rockPrefab;
     public GameObject coinPrefab;
     public float spawnLimitLeft = -6;
     public float spawnLimitRight = 6;
     public float obstacleSpawnInterval = 5; // Intervalle pour les obstacles
-    public float coinSpawnInterval = 3; // Intervalle pour les piËces
+    public float coinSpawnInterval = 3; // Intervalle pour les pi√®ces
 
     void Start()
+{
+    playerFeedback = FindObjectOfType<PlayerFeedback>(); // Ceci trouve le script PlayerFeedback dans la sc√®ne
+    if (playerFeedback == null)
     {
-        // Commence ‡ gÈnÈrer des obstacles et des piËces
-        StartCoroutine(SpawnObstacles());
-        StartCoroutine(SpawnCoins());
+        Debug.LogError("Le script PlayerFeedback n'a pas √©t√© trouv√©. Assurez-vous qu'il est attach√© √† un objet actif dans la sc√®ne.");
+        return;
     }
+
+    // Commence √† g√©n√©rer des obstacles et des pi√®ces
+    StartCoroutine(SpawnObstacles());
+    StartCoroutine(SpawnCoins());
+}
+
 
     IEnumerator SpawnObstacles()
     {
         while (true)
         {
-            // Choisissez alÈatoirement entre branchPrefab et rockPrefab pour l'obstacle ‡ gÈnÈrer
+            // Choisie aleatoirement branch ou rock 
             GameObject obstaclePrefab = Random.Range(0, 2) == 0 ? branchPrefab : rockPrefab;
             Vector3 spawnPosition = new Vector3(Random.Range(spawnLimitLeft, spawnLimitRight), 0, transform.position.z);
             Instantiate(obstaclePrefab, spawnPosition, Quaternion.identity);
 
-            yield return new WaitForSeconds(obstacleSpawnInterval);
+            // Ajuster l'intervalle de g√©n√©ration en fonction du score
+            float intervalAdjustment = playerFeedback.score / 2; 
+            float adjustedInterval = Mathf.Clamp(obstacleSpawnInterval - intervalAdjustment, 1, obstacleSpawnInterval);
+
+            yield return new WaitForSeconds(adjustedInterval);
         }
     }
 
