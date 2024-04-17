@@ -5,26 +5,40 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float horizontalSpeed = 10.0f;
-    public float forwardSpeed = 5.0f;
     public float jumpForce = 700.0f;
+    public float turnSpeed = 100.0f; // Vitesse de rotation
+    public float maxRotationAngle = 20.0f; // Angle maximal de rotation
     private Rigidbody rb;
-    private float timeSinceLastJump = 0.0f; // Timer pour le saut
+    private Animator animator;
+    private bool isGrounded;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
     }
 
     void Update()
     {
-        // Incrémentation du timer
-        timeSinceLastJump += Time.deltaTime;
-
         // Gestion du saut
-        if (Input.GetButtonDown("Jump") && timeSinceLastJump >= 1.0f) // Si une seconde s'est écoulée
+        if (isGrounded && Input.GetButtonDown("Jump"))
         {
-            rb.AddForce(Vector3.up * jumpForce);
-            timeSinceLastJump = 0.0f; // Réinitialisation du timer après le saut
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            isGrounded = false;
+            animator.SetBool("IsJumping", true);
+        }
+
+        // Tourner le personnage avec un angle limité
+        if (isGrounded)
+        {
+            float horizontalInput = Input.GetAxis("Horizontal");
+            if (horizontalInput != 0)
+            {
+                // Calculer l'angle de rotation cible basé sur l'input
+                float targetAngle = Mathf.Clamp(horizontalInput * maxRotationAngle, -maxRotationAngle, maxRotationAngle);
+                Quaternion targetRotation = Quaternion.Euler(0, targetAngle, 0);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+            }
         }
     }
 
@@ -32,14 +46,20 @@ public class PlayerController : MonoBehaviour
     {
         // Mouvement horizontal
         float h = Input.GetAxis("Horizontal") * horizontalSpeed;
-
-        // Appliquer la vélocité horizontale et le mouvement automatique vers l'avant
-        rb.velocity = new Vector3(h, rb.velocity.y, forwardSpeed);
+        rb.velocity = new Vector3(h, rb.velocity.y, 0);
 
         // Restreindre le mouvement horizontal entre -5 et 5 sur l'axe X
-        float clampedX = Mathf.Clamp(rb.position.x, -5f, 6f);
-        
-        // Appliquer la position contrainte
+        float clampedX = Mathf.Clamp(rb.position.x, -5f, 5f);
         rb.position = new Vector3(clampedX, rb.position.y, rb.position.z);
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        // Vérifier que le joueur est en collision avec le sol
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = true;
+            animator.SetBool("IsJumping", false);
+        }
     }
 }

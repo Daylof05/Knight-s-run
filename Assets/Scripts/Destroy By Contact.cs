@@ -13,15 +13,17 @@ public class DestroyByContact : MonoBehaviour
             if (gameObject.CompareTag("Coin"))
             {
                 other.GetComponent<PlayerFeedback>().AddScore(1);
-                Destroy(gameObject); // Détruit la pièce
+                Destroy(gameObject); // Dï¿½truit la piï¿½ce
             }
             else if (gameObject.CompareTag("Obstacle"))
             {
+                other.GetComponent<Animator>().SetBool("IsDead", true);
+                
                 int currentScore = other.GetComponent<PlayerFeedback>().score;
                 PlayerPrefs.SetInt("PlayerScore", currentScore);
                 PlayerPrefs.Save();
 
-                SceneManager.LoadScene("EndMenu"); // Remplacez "GameOverSceneName" par le nom de votre scène de game over
+                SceneManager.LoadScene("EndMenu"); // Remplacez "GameOverSceneName" par le nom de votre scï¿½ne de game over
             }
         }
     }
