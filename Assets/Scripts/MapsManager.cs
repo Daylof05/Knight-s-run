@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class MapManager : MonoBehaviour
 {
-    public float mapLength; // Longueur de votre map
-    public GameObject[] maps; // Vos maps
+    public float mapLength; 
+    public GameObject[] maps; 
     public float threshold; // Seuil pour repositionner la map
 
-    // Assurez-vous que cette méthode est appelée régulièrement
     private void Update()
     {
         foreach (var map in maps)

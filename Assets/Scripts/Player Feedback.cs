@@ -26,11 +26,6 @@ public class PlayerFeedback : MonoBehaviour
         UpdateScoreUI();
     }
 
-    public void GameOver()
-    {
-        // Gérer le game over ici
-    }
-
     private void UpdateScoreUI()
     {
         scoreText.text = "Score: " + score.ToString(); // Mettre à jour le texte

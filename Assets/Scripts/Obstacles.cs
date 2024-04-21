@@ -14,7 +14,7 @@ public class GameElementSpawner : MonoBehaviour
 
     void Start()
 {
-    playerFeedback = FindObjectOfType<PlayerFeedback>(); // Ceci trouve le script PlayerFeedback dans la scène
+    playerFeedback = FindObjectOfType<PlayerFeedback>(); // Trouve le script PlayerFeedback dans la scène
     if (playerFeedback == null)
     {
         Debug.LogError("Le script PlayerFeedback n'a pas été trouvé. Assurez-vous qu'il est attaché à un objet actif dans la scène.");

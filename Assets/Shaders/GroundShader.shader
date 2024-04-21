@@ -44,7 +44,6 @@ Shader "Custom/MovingTextureShader"
             
             fixed4 frag (v2f i) : SV_Target
             {
-                // Ajout d'un déplacement basé sur le temps à l'UV pour le défilement
                 float2 uv = i.uv + (_Speed.xy * _Time.y);
                 fixed4 col = tex2D(_MainTex, uv);
                 return col;
